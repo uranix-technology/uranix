@@ -1,210 +1,458 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Uranix - Solusi Digital untuk UMKM & Mahasiswa Profesional.">
+    <title>Uranix | Digital Solutions</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           1. VARIABLES & THEMES
+           ========================================= */
+        :root {
+            /* Colors */
+            --primary: #2563EB;
+            --primary-light: #3B82F6;
+            --accent: #06B6D4;
+            
+            /* Dark Theme (Default) */
+            --bg-body: #02040a;
+            --bg-nav: rgba(2, 4, 10, 0.85);
+            --bg-glass: rgba(15, 23, 42, 0.6);
+            --border-glass: rgba(56, 189, 248, 0.15);
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --card-hover: rgba(30, 41, 59, 0.7);
+            --shadow-color: rgba(0,0,0,0.5);
+            --blob-opacity: 0.4;
+            --cta-gradient: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9));
+        }
 
-    <link rel="stylesheet" href="assets/css/styles.css">
+        [data-theme="light"] {
+            --bg-body: #F1F5F9;
+            --bg-nav: rgba(241, 245, 249, 0.85);
+            --bg-glass: rgba(255, 255, 255, 0.7);
+            --border-glass: rgba(37, 99, 235, 0.1);
+            --text-main: #0F172A;
+            --text-muted: #475569;
+            --card-hover: rgba(255, 255, 255, 0.95);
+            --shadow-color: rgba(148, 163, 184, 0.4);
+            --blob-opacity: 0.6;
+            --cta-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(241, 245, 249, 0.9));
+        }
 
-    <!-- =====BOX ICONS===== -->
-    <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            transition: 0.4s ease;
+        }
 
-    <title>Portfolio | Fajar Ramadhan</title>
+        h1, h2, h3, h4, .logo { font-family: 'Outfit', sans-serif; }
+
+        .container {
+            width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px;
+        }
+
+        /* =========================================
+           2. ANIMATED BACKGROUND
+           ========================================= */
+        .bg-animation {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; overflow: hidden; pointer-events: none;
+        }
+        .blob {
+            position: absolute; border-radius: 50%; filter: blur(80px);
+            opacity: var(--blob-opacity); transition: opacity 0.5s ease;
+        }
+        .blob-1 {
+            width: 50vw; height: 50vw; top: -10%; left: -10%;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.4) 0%, transparent 70%);
+            animation: moveBlob1 15s infinite alternate;
+        }
+        .blob-2 {
+            width: 40vw; height: 40vw; bottom: -10%; right: -10%;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.3) 0%, transparent 70%);
+            animation: moveBlob2 20s infinite alternate;
+        }
+        @keyframes moveBlob1 { 0% { transform: translate(0, 0); } 100% { transform: translate(100px, 50px); } }
+        @keyframes moveBlob2 { 0% { transform: translate(0, 0); } 100% { transform: translate(-80px, -40px); } }
+
+        /* =========================================
+           3. NAVBAR
+           ========================================= */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 15px 0; z-index: 1000;
+            background: var(--bg-nav); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-glass);
+        }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; text-decoration: none;}
+        .logo span { color: var(--primary-light); }
+
+        /* Menu Links Style */
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a {
+            text-decoration: none; color: var(--text-muted); font-weight: 500; font-size: 0.95rem; transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--primary-light); }
+
+        .nav-actions { display: flex; align-items: center; gap: 15px; }
+
+        /* Theme Toggle */
+        .theme-switch {
+            background: var(--bg-glass); border: 1px solid var(--border-glass);
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: var(--text-main); transition: 0.3s;
+        }
+        .theme-switch:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px;
+            border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.95rem;
+            transition: 0.3s; cursor: pointer; border: none;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), #1D4ED8); color: #fff;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5); }
+        .btn-outline { color: var(--text-muted); font-weight: 500; border: 1px solid var(--border-glass); }
+        .btn-outline:hover { color: var(--text-main); border-color: var(--primary); }
+
+        /* =========================================
+           4. HERO SECTION
+           ========================================= */
+        .hero {
+            padding: 160px 0 100px; text-align: center;
+            min-height: 90vh; display: flex; align-items: center;
+        }
+        .hero h1 {
+            font-size: clamp(2.3rem, 5vw + 1rem, 4.5rem); line-height: 1.1; margin-bottom: 24px; font-weight: 800;
+            background: linear-gradient(135deg, var(--text-main) 30%, var(--primary-light) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.15rem; color: var(--text-muted); max-width: 640px; margin: 0 auto 40px;
+        }
+
+        /* =========================================
+           5. ABOUT SECTION
+           ========================================= */
+        .section { padding: 80px 0; }
+        
+        .about-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center;
+        }
+        .about-content h2 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.2; }
+        .about-content p { color: var(--text-muted); margin-bottom: 20px; text-align: justify; }
+
+        .stats-row { display: flex; gap: 40px; margin-top: 30px; }
+        .stat-item h3 { font-size: 2.5rem; color: var(--primary-light); margin-bottom: 5px; font-weight: 700; font-family: 'Outfit'; }
+        .stat-item p { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        .about-image {
+            background: radial-gradient(circle at center, rgba(37, 99, 235, 0.2), transparent 70%);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px; height: 350px;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        .about-image i { font-size: 8rem; color: var(--primary-light); opacity: 0.3; }
+
+        /* =========================================
+           6. SERVICES SECTION
+           ========================================= */
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.2rem; margin-bottom: 10px; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+
+        .card {
+            background: var(--bg-glass); border: 1px solid var(--border-glass);
+            border-radius: 24px; padding: 32px; transition: 0.4s;
+            backdrop-filter: blur(20px);
+        }
+        .card:hover {
+            transform: translateY(-8px); border-color: var(--primary);
+            background: var(--card-hover); box-shadow: 0 20px 40px -10px var(--shadow-color);
+        }
+
+        .icon-box {
+            width: 56px; height: 56px; background: rgba(37, 99, 235, 0.1);
+            border-radius: 16px; display: flex; align-items: center; justify-content: center;
+            margin-bottom: 24px; color: var(--primary-light); font-size: 1.5rem; transition: 0.4s;
+        }
+        .card:hover .icon-box { background: var(--primary); color: #fff; transform: rotate(5deg); }
+        .card h3 { font-size: 1.35rem; margin-bottom: 12px; color: var(--text-main); }
+        .card p { font-size: 0.95rem; color: var(--text-muted); }
+
+        .card.highlight-card {
+            background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.15), transparent 70%), var(--bg-glass);
+            border-color: rgba(59, 130, 246, 0.4);
+        }
+
+        /* =========================================
+           7. CTA SECTION
+           ========================================= */
+        .cta-box {
+            background: var(--cta-gradient); border: 1px solid var(--border-glass);
+            border-radius: 30px; padding: 70px 24px; text-align: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 20px 50px -10px var(--shadow-color);
+        }
+        .cta-box h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); color: var(--text-main); margin-bottom: 16px; }
+        .cta-box p { color: var(--text-muted); margin-bottom: 32px; max-width: 600px; }
+
+        /* =========================================
+           8. FOOTER
+           ========================================= */
+        footer {
+    border-top: 1px solid var(--border-glass); 
+    padding: 60px 0 30px;
+    background: var(--bg-glass); /* Menggunakan variabel glass agar konsisten */
+    backdrop-filter: blur(16px); /* Efek blur di belakang footer */
+    -webkit-backdrop-filter: blur(16px);
+    font-size: 0.95rem;
+}
+        .footer-grid {
+            display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px;
+        }
+        .footer-info p { color: var(--text-muted); max-width: 300px; margin-top: 15px; }
+        
+        .footer-links h4 { font-family: 'Outfit'; font-size: 1.1rem; margin-bottom: 20px; color: var(--text-main); }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { text-decoration: none; color: var(--text-muted); transition: 0.2s; }
+        .footer-links a:hover { color: var(--primary-light); }
+
+        .socials { display: flex; gap: 15px; margin-top: 20px; }
+        .socials a { color: var(--text-muted); font-size: 1.2rem; transition: 
+0.3s; }
+        .socials a:hover { color: var(--primary-light); }
+
+        .copyright { text-align: center; border-top: 1px solid var(--border-glass); padding-top: 30px; color: var(--text-muted); font-size: 0.85rem; }
+
+        /* WA Float */
+        .wa-float {
+            position: fixed; bottom: 30px; right: 30px; background: #25D366;
+            width: 60px; height: 60px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-size: 30px; color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 2000; text-decoration: none;
+            transition: 0.3s;
+        }
+        .wa-float:hover { transform: scale(1.1); }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero { padding-top: 140px; }
+            .about-grid { grid-template-columns: 1fr; }
+            .about-image { order: -1; height: 250px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+        }
+    </style>
 </head>
 <body>
-    <!--===== HEADER =====-->
-  <header class="l-header">
-    <nav class="nav bd-grid">
-        <div>
-            <a href="#" class="nav__logo">Uranix.</a>
-        </div>
-        
-        <div class="nav__menu" id="nav-menu">
-            <ul class="nav__list">
-                <li class="nav__item"><a href="#home" class="nav__link active-link">Home</a></li>
-                <li class="nav__item"><a href="#about" class="nav__link">About</a></li>
-                <li class="nav__item"><a href="#skills" class="nav__link">Skills</a></li>
-                <li class="nav__item"><a href="#work" class="nav__link">Work</a></li>
-                <li class="nav__item"><a href="#contact" class="nav__link">Contact</a></li>
-                <li class="nav__item nav__mode" id="nav-mode">
-                    <i class='bx bx-moon'></i>
-                </li>
-            </ul>
-        </div>
-        
-        <div class="nav__toggle" id="nav-toggle">
-            <i class='bx bx-menu'></i>
+
+    <div class="bg-animation">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">Uranix<span>.</span></a>
+            
+            <div class="nav-links">
+                <a href="#home">Beranda</a>
+                <a href="#about">Tentang Kami</a>
+                <a href="#layanan">Layanan</a>
+                <a href="#contact">Kontak</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="theme-switch" id="theme-toggle" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                </div>
         </div>
     </nav>
-</header>
 
-    <main class="l-main">
-        <!--===== HOME =====-->
-        <section class="home bd-grid" id="home">
-            <div class="home__data">
-                <h1 class="home__title">Hi, I'm..
-                   <br><span class="home__title-color">Fajar Ramadhan</span>
-                   <br><a>IT Enthusiast</a></h1>
-
-                   <a href="https://wa.me/qr/XQIOFW3WJX2DI1" class="button">Contact</a>
-               </div>
-
-               <div class="home__social">
-                <a href="https://www.linkedin.com/in/fajar-ramadhan-a65159260/" class="home__social-icon"><i class='bx bxl-linkedin'></i></a>
-                <a href="https://www.instagram.com/fajar.raccord/" class="home__social-icon"><i class='bx bxl-instagram' ></i></a>
-                <a href="https://github.com/Fraccord25" class="home__social-icon"><i class='bx bxl-github' ></i></a>
+    <section id="home" class="hero">
+        <div class="container">
+            <h1 data-aos="fade-up" data-aos-duration="1000">
+                Solusi Digital untuk<br>
+                UMKM & Mahasiswa Profesional.
+            </h1>
+            <p data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+                Uranix hadir sebagai mitra IT terpercaya. Kami membantu bisnis Go Digital dan mendampingi Mahasiswa dalam pengembangan sistem dengan kualitas terbaik.
+            </p>
+            <div data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000">
+                <a href="#layanan" class="btn btn-primary">Jelajahi Solusi</a>
+                <a href="#about" class="btn btn-outline">Pelajari Kami</a>
             </div>
+        </div>
+    </section>
 
-            <div class="home__img">
-                <svg class="home__blob" viewBox="0 0 479 467" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <mask id="mask0" mask-type="alpha">
-                        <path d="M9.19024 145.964C34.0253 76.5814 114.865 54.7299 184.111 29.4823C245.804 6.98884 311.86 -14.9503 370.735 14.143C431.207 44.026 467.948 107.508 477.191 174.311C485.897 237.229 454.931 294.377 416.506 344.954C373.74 401.245 326.068 462.801 255.442 466.189C179.416 469.835 111.552 422.137 65.1576 361.805C17.4835 299.81 -17.1617 219.583 9.19024 145.964Z"/>
-                    </mask>
-                    <g mask="url(#mask0)">
-                        <path d="M9.19024 145.964C34.0253 76.5814 114.865 54.7299 184.111 29.4823C245.804 6.98884 311.86 -14.9503 370.735 14.143C431.207 44.026 467.948 107.508 477.191 174.311C485.897 237.229 454.931 294.377 416.506 344.954C373.74 401.245 326.068 462.801 255.442 466.189C179.416 469.835 111.552 422.137 65.1576 361.805C17.4835 299.81 -17.1617 219.583 9.19024 145.964Z"/>
-                        <image class="home__blob-img" x="50" y="60" href="assets/img/perfil.png"/>
-                    </g>
-                </svg>
-            </div>
-        </section>
-
-        <!--===== ABOUT =====-->
-        <section class="about section " id="about">
-            <h2 class="section-title">About</h2>
-
-            <div class="about__container bd-grid">
-            
-
-                <div>
-                   
-                    <p class="about__text">Pegiat FOSS (Free and Open Source Software), yang selalu menggaungkan serta mempromosikan Linux di mana pun berada. memiliki passion dalam web dev dan anthusiast dalam perkembangan IT. Bagi saya, FOSS bukan sekadar alat, tetapi sebuah filosofi tentang kebebasan, kolaborasi, dan prinsip.
-                    </div>                                   
-                </div>
-            </section>
-
-            <!--===== SKILLS =====-->
-            <section class="skills section" id="skills">
-                <h2 class="section-title">Skills</h2>
-
-                <div class="skills__container bd-grid">          
-                    <div>
-                        <h2 class="skills__subtitle">Profesional Skills</h2>
-                        <div class="skills__data">
-                            <div class="skills__names">
-                                <i class='bx bxl-html5 skills__icon'></i>
-                                <span class="skills__name">HTML5</span>
-                            </div>
-                            <div class="skills__bar skills__html">
-
-                            </div>
-                            <div>
-                                <span class="skills__percentage">95%</span>
-                            </div>
-                        </div>
-                        <div class="skills__data">
-                            <div class="skills__names">
-                                <i class='bx bxl-css3 skills__icon'></i>
-                                <span class="skills__name">CSS3</span>
-                            </div>
-                            <div class="skills__bar skills__css">
-
-                            </div>
-                            <div>
-                                <span class="skills__percentage">85%</span>
-                            </div>
-                        </div>
-                        <div class="skills__data">
-                            <div class="skills__names">
-                                <i class='bx bxl-javascript skills__icon' ></i>
-                                <span class="skills__name">JAVASCRIPT</span>
-                            </div>
-                            <div class="skills__bar skills__js">
-
-                            </div>
-                            <div>
-                                <span class="skills__percentage">65%</span>
-                            </div>
-                        </div>
-                        <div class="skills__data">
-                            <div class="skills__names">
-                                <i class='bx bxs-paint skills__icon'></i>
-                                <span class="skills__name">UX/UI</span>
-                            </div>
-                            <div class="skills__bar skills__ux">
-
-                            </div>
-                            <div>
-                                <span class="skills__percentage">85%</span>
-                            </div>
-                        </div>
-                    </div>
+    <section id="about" class="section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content" data-aos="fade-right">
+                    <h2>Mewujudkan Ide Menjadi<br><span style="color: var(--primary-light);">Solusi Digital Nyata.</span></h2>
+                    <p>
+                        Uranix Technology didirikan dengan visi untuk menjembatani kesenjangan teknologi. Kami percaya bahwa setiap bisnis berhak memiliki website profesional, dan setiap mahasiswa berhak mendapatkan bimbingan teknis yang tepat.
+                    </p>
+                    <p>
+                        Tim kami terdiri dari developer berpengalaman yang siap menangani proyek dari skala kecil hingga kompleks.
+                    </p>
                     
-                    <div>              
-                        <img src="assets/img/work3.jpg" alt="" class="skills__img">
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <h3>2+</h3>
+                            <p>Tahun Pengalaman</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>100+</h3>
+                            <p>Proyek Selesai</p>
+                        </div>
                     </div>
                 </div>
-            </section>
-
-            <!--===== WORK =====-->
-            <section class="work section" id="work">
-                <h2 class="section-title">Work</h2>
-
-                <div class="work__container bd-grid">
-                    <a href="" class="work__img">
-                        <img src="assets/img/work1.jpg" alt="">
-                    </a>
-                    <a href="" class="work__img">
-                        <img src="assets/img/work2.jpg" alt="">
-                    </a>
-                    <a href="" class="work__img">
-                        <img src="assets/img/work3.jpg" alt="">
-                    </a>
-                    <a href="" class="work__img">
-                        <img src="assets/img/work4.jpg" alt="">
-                    </a>
-                    <a href="" class="work__img">
-                        <img src="assets/img/work5.jpg" alt="">
-                    </a>
-                    <a href="" class="work__img">
-                        <img src="assets/img/work6.jpg" alt="">
-                    </a>
+                <div class="about-image" data-aos="fade-left">
+                    <i class="fa-solid fa-rocket"></i>
                 </div>
-            </section>
-
-            <!--===== CONTACT =====-->
-            <section class="contact section" id="contact">
-                <h2 class="section-title">Contact</h2>
-
-                <div class="contact__container bd-grid">
-                    <form action="" class="contact__form">
-                        <input type="text" placeholder="Name" class="contact__input">
-                        <input type="mail" placeholder="Email" class="contact__input">
-                        <textarea name="" id="" cols="0" rows="10" class="contact__input"></textarea>
-                        <input type="button" value="Send" class="contact__button button">
-                    </form>
-                </div>
-            </section>
-        </main>
-
-        <!--===== FOOTER =====-->
-        <footer class="footer">
-            <p class="footer__title">Follow us</p>
-            <div class="footer__social">
-                <a href="#" class="footer__icon"><i class='bx bxl-facebook' ></i></a>
-                <a href="#" class="footer__icon"><i class='bx bxl-instagram' ></i></a>
-                <a href="#" class="footer__icon"><i class='bx bxl-twitter' ></i></a>
             </div>
-            <p class="footer__copy">&#169; Fajarramadhan. All rigths reserved</p>
-        </footer>
+        </div>
+    </section>
 
+    <section id="layanan" class="section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2>Layanan Kami</h2>
+                <p style="color: var(--text-muted);">Profesional, Cepat, dan Terjangkau.</p>
+            </div>
 
-        <!--===== SCROLL REVEAL =====-->
-        <script src="https://unpkg.com/scrollreveal"></script>
+            <div class="services-grid">
+                <div class="card" data-aos="fade-up" data-aos-delay="0">
+                    <div class="icon-box"><i class="fa-solid fa-code"></i></div>
+                    <h3>Web Development</h3>
+                    <p>Pembuatan website Company Profile, Landing Page, dan Portal Berita yang responsif dan SEO-friendly.</p>
+                </div>
 
-        <!--===== MAIN JS =====-->
-        <script src="assets/js/main.js"></script>
-    </body>
-    </html>
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon-box"><i class="fa-solid fa-store"></i></div>
+                    <h3>E-Commerce</h3>
+                    <p>Sistem toko online siap pakai dengan fitur keranjang belanja dan checkout WhatsApp.</p>
+                </div>
 
+                <div class="card highlight-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-box"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <h3>Edu-Tech & Skripsi</h3>
+                    <p>Jasa pembuatan aplikasi Tugas Akhir/Skripsi (Web/Mobile) lengkap dengan penjelasan kode dan flowchart.</p>
+                </div>
 
+                <div class="card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="icon-box"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                    <h3>Maintenance</h3>
+                    <p>Website error, bug fixing, optimasi database, hingga maintenance rutin agar performa sistem stabil.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <div class="container" style="margin: 80px auto;">
+        <section class="cta-box" data-aos="zoom-in">
+            <h2>Mulai Transformasi Digital</h2>
+            <p>
+                Konsultasikan ide bisnis atau kendala tugas Anda kepada tim teknis Uranix. Kami siap memberikan solusi terbaik.
+            </p>
+            <a href="https://wa.me/6289665119793?text=Halo%20Uranix" class="btn btn-primary">
+                <i class="fa-brands fa-whatsapp"></i> Hubungi Kami Sekarang
+            </a>
+        </section>
+    </div>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <a href="#" class="logo">Uranix<span>.</span></a>
+                    <p>Mitra teknologi terpercaya untuk transformasi digital bisnis dan edukasi di Indonesia.</p>
+                    <div class="socials">
+                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#"><i class="fa-brands fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Navigasi</h4>
+                    <ul>
+                        <li><a href="#home">Beranda</a></li>
+                        <li><a href="#about">Tentang Kami</a></li>
+                        <li><a href="#layanan">Layanan</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Kontak</h4>
+                    <ul>
+                        <li><a href="https://wa.me/6289665119793">WhatsApp Admin</a></li>
+                        <li><a href="mailto:contact@uranix.id">contact@uranix.id</a></li>
+                        <li>Senin - Sabtu (09.00 - 21.00)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2026 Uranix Technology. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/6289665119793" class="wa-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true, duration: 800, offset: 100 });
+
+        // Toggle Theme Logic
+        const toggleBtn = document.getElementById('theme-toggle');
+        const icon = toggleBtn.querySelector('i');
+        const html = document.documentElement;
+
+        if (localStorage.getItem('theme') === 'light') {
+            html.setAttribute('data-theme', 'light');
+            icon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            const current = html.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            
+            if (next === 'light') icon.classList.replace('fa-moon', 'fa-sun');
+            else icon.classList.replace('fa-sun', 'fa-moon');
+        });
+    </script>
+
+</body>
+</html>
