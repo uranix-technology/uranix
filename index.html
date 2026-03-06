@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinuxEdu | Tingkatkan Keahlian Open Source Anda</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                Linux<span class="text-accent">Edu</span>
+            </a>
+            
+           
+
+            <nav class="nav-links" id="navLinks">
+                <a href="#materi" class="nav-link-item">Materi Pembelajaran</a>
+                <a href="pages/login.html" class="nav-link-subtle nav-link-item">Masuk</a>
+                <a href="pages/register.html" class="btn btn-primary nav-link-item">Daftar Akun</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero relative-overflow">
+        <div class="glow-bg top-left"></div>
+        <div class="glow-bg bottom-right"></div>
+
+        <div class="container hero-content animate-on-scroll">
+            <div class="badge-pill mb-4">
+                <span class="badge-dot"></span> Rilis Modul Cinnamon Terbaru
+            </div>
+            
+            <h1 class="hero-title">
+                Kuasai Kernelnya.<br>
+                <span id="typewriter" class="text-gradient"></span>
+            </h1>
+            
+            <p class="hero-desc">
+                Tingkatkan keahlian sumber terbuka (open-source) Anda. Dari perintah dasar bash hingga administrasi server tingkat lanjut dan kustomisasi antarmuka desktop.
+            </p>
+            
+            <div class="hero-cta">
+                <a href="pages/register.html" class="btn btn-primary btn-lg">Mulai Belajar Sekarang</a>
+                <a href="#materi" class="btn btn-glass btn-lg">Lihat Daftar Modul</a>
+            </div>
+<br>
+<br>
+<br>
+            <div class="mockup-container mt-5 animate-on-scroll" style="transition-delay: 0.2s;">
+                <div class="mockup-header">
+                    <div class="mockup-dots"><span></span><span></span><span></span></div>
+                    <div class="mockup-url">localhost:8080/dashboard</div>
+                </div>
+                <div class="mockup-body">
+                    <div class="code-line"><span class="code-comment"># Memulai layanan pembelajaran...</span></div>
+                    <div class="code-line"><span class="code-keyword">sudo</span> systemctl start linux-edu</div>
+                    <div class="code-line"><span class="code-success">[ OK ]</span> Layanan berhasil dijalankan.</div>
+                    <div class="code-line">Menunggu koneksi siswa...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="materi" class="courses">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">Kurikulum <span class="text-accent">Terstruktur</span></h2>
+                <p class="section-subtitle">Pilih jalur pembelajaran yang sesuai dengan tingkat keahlian Anda saat ini.</p>
+            </div>
+            
+            <div class="course-grid">
+                <div class="course-card animate-on-scroll" style="transition-delay: 0.1s;">
+                    <div class="card-badge badge-beginner">Pemula</div>
+                    <h3>Dasar-Dasar Linux</h3>
+                    <p>Pelajari struktur direktori, manajemen pengguna, hak akses (chmod, chown), dan perintah dasar terminal untuk pemula.</p>
+                    <div class="card-footer">
+                        <span class="course-meta">8 Bab • 12 Jam</span>
+                        <a href="pages/register.html" class="card-link">Akses Modul &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="course-card animate-on-scroll" style="transition-delay: 0.2s;">
+                    <div class="card-badge badge-intermediate">Menengah</div>
+                    <h3>Pemrograman Skrip Bash</h3>
+                    <p>Otomatisasi tugas berulang Anda dengan menulis skrip Bash yang efisien. Membahas variabel, perulangan, dan percabangan.</p>
+                    <div class="card-footer">
+                        <span class="course-meta">10 Bab • 15 Jam</span>
+                        <a href="pages/register.html" class="card-link">Akses Modul &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="course-card animate-on-scroll" style="transition-delay: 0.3s;">
+                    <div class="card-badge badge-intermediate">Menengah</div>
+                    <h3>Kustomisasi Cinnamon</h3>
+                    <p>Eksplorasi mendalam untuk meracik lingkungan desktop Linux Mint Cinnamon Anda agar tampil estetik dan produktif.</p>
+                    <div class="card-footer">
+                        <span class="course-meta">5 Bab • 8 Jam</span>
+                        <a href="pages/register.html" class="card-link">Akses Modul &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="course-card animate-on-scroll" style="transition-delay: 0.4s;">
+                    <div class="card-badge badge-advanced">Lanjutan</div>
+                    <h3>Administrasi Server</h3>
+                    <p>Persiapan VPS, konfigurasi Nginx/Apache, manajemen tembok api (UFW), dan penyebaran aplikasi di lingkungan produksi.</p>
+                    <div class="card-footer">
+                        <span class="course-meta">12 Bab • 20 Jam</span>
+                        <a href="pages/register.html" class="card-link">Akses Modul &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-content animate-on-scroll">
+            <div class="footer-brand">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="logo-icon"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                <span class="font-semibold">LinuxEdu</span>
+            </div>
+            <p class="footer-text">&copy; 2026 Proyek LMS Linux. Dibangun untuk ekosistem Open Source.</p>
+            <div class="footer-links">
+                <a href="#">Ketentuan</a>
+                <a href="#">Privasi</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

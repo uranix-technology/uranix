@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dasbor Siswa | LinuxEdu</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: var(--bg-color); }
+        .dashboard-wrapper { padding-top: 100px; padding-bottom: 60px; }
+        
+        .user-greeting { margin-bottom: 40px; }
+        .greeting-title { font-size: 2.2rem; margin-bottom: 5px; }
+        
+        .progress-container { 
+            background-color: var(--surface-color); 
+            border: 1px solid var(--border-color); 
+            padding: 30px; 
+            border-radius: 16px; 
+            margin-bottom: 40px; 
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
+        }
+        .progress-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; }
+        .progress-title { font-size: 1.1rem; font-weight: 600; color: var(--text-main); }
+        .progress-percent { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        
+        .progress-bar-bg { 
+            width: 100%; height: 12px; 
+            background-color: #0b0f19; 
+            border-radius: 10px; overflow: hidden; 
+        }
+        .progress-bar-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, #10b981 0%, #3b82f6 100%);
+            width: 45%; 
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+            animation: loadProgress 1.5s ease-out forwards;
+        }
+
+        @keyframes loadProgress {
+            from { width: 0%; }
+        }
+
+        .dashboard-nav {
+            background-color: rgba(15, 23, 42, 0.85);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 36px; height: 36px;
+            background-color: var(--accent);
+            color: #fff;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 1rem;
+        }
+
+        .btn-logout {
+            color: #ef4444; border-color: rgba(239, 68, 68, 0.3);
+        }
+        .btn-logout:hover {
+            background-color: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: #ef4444;
+            transform: none; box-shadow: none;
+        }
+
+        /* Mobile Fixes */
+        @media (max-width: 768px) {
+            .progress-container { padding: 20px; }
+            .user-profile { gap: 10px; }
+            .user-profile span { display: none; } /* Sembunyikan nama di HP agar muat */
+            .greeting-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="dashboard-nav">
+        <div class="container nav-content">
+            <a href="dashboard.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                Linux<span class="text-accent">Edu</span>
+            </a>
+            <div class="user-profile">
+                <span style="font-weight: 500; color: var(--text-main);">Fajar Ramadhan</span>
+                <div class="avatar">FR</div>
+                <a href="../index.html" class="btn btn-glass btn-logout" style="padding: 6px 12px; font-size: 0.85rem;">Keluar</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="dashboard-wrapper">
+        <div class="container">
+            
+            <div class="user-greeting animate-on-scroll">
+                <h1 class="greeting-title">Halo, <span class="text-gradient">Fajar</span> 👋</h1>
+                <p style="color: var(--text-muted); font-size: 1.1rem;">Lanjutkan perjalanan belajarmu hari ini.</p>
+            </div>
+
+            <div class="progress-container animate-on-scroll" style="transition-delay: 0.1s;">
+                <div class="progress-header">
+                    <div class="progress-title">Kemajuan Keseluruhan</div>
+                    <div class="progress-percent">45%</div>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 12px;">Anda telah menyelesaikan 2 dari 4 modul aktif.</p>
+            </div>
+
+            <h2 class="section-title" style="margin-bottom: 25px; font-size: 1.5rem;">Modul Pembelajaran Anda</h2>
+            
+            <div class="course-grid">
+                <div class="course-card animate-on-scroll" style="transition-delay: 0.2s; border-color: rgba(16, 185, 129, 0.4);">
+                    <div class="card-badge badge-beginner" style="background-color: rgba(16, 185, 129, 0.15); color: var(--accent);">Sedang Berjalan</div>
+                    <h3>Dasar-Dasar Linux</h3>
+                    <p>Modul: Manajemen Pengguna & Hierarki Direktori Sistem.</p>
+                    <div class="card-footer" style="padding-top: 0; border-top: none;">
+                        <div style="width: 100%; margin-top: 10px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px;">
+                                <span>Kemajuan Modul</span><span>80%</span>
+                            </div>
+                            <div class="progress-bar-bg" style="height: 6px; margin-bottom: 20px;"><div class="progress-bar-fill" style="width: 80%; background: var(--accent); box-shadow: none; animation: none;"></div></div>
+                            <a href="player.html" class="btn btn-primary" style="width: 100%;">Lanjutkan Belajar</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card animate-on-scroll" style="transition-delay: 0.3s;">
+                    <div class="card-badge badge-intermediate" style="background-color: rgba(248, 113, 113, 0.15); color: #f87171;">Belum Dimulai</div>
+                    <h3>Kustomisasi Cinnamon</h3>
+                    <p>Modul: Konfigurasi Ekstensi, Tema, & Pintasan Keyboard.</p>
+                    <div class="card-footer" style="padding-top: 0; border-top: none;">
+                        <div style="width: 100%; margin-top: 10px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px;">
+                                <span>Kemajuan Modul</span><span>0%</span>
+                            </div>
+                            <div class="progress-bar-bg" style="height: 6px; margin-bottom: 20px;"></div>
+                            <a href="player.html" class="btn btn-glass" style="width: 100%; border: 1px solid var(--border-color);">Mulai Modul Ini</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

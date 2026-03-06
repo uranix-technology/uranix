@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Materi | LinuxEdu</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Agar body tidak bisa discroll full di desktop (mirip aplikasi natif) */
+        body { background-color: var(--bg-color); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* Top Navigation Bar Khusus Player */
+        .player-navbar { 
+            background-color: #0b0f19; 
+            border-bottom: 1px solid var(--border-color); 
+            padding: 12px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            height: 70px;
+            flex-shrink: 0;
+            z-index: 1050;
+        }
+        
+        .course-title-top { font-weight: 600; font-size: 1.05rem; color: var(--text-main); flex-grow: 1; text-align: center; }
+        
+        .player-actions { display: flex; gap: 10px; align-items: center; }
+
+        /* Tombol Toggle Modul (Hanya Muncul di Mobile) */
+        .btn-toggle-modul {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            background-color: var(--surface-hover);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-toggle-modul:hover { background-color: rgba(255, 255, 255, 0.1); }
+
+        /* Layout Utama Terbagi Dua (Flexbox) */
+        .player-layout { 
+            display: flex; 
+            flex-direction: row; 
+            flex: 1; 
+            overflow: hidden; 
+            position: relative;
+        }
+        
+        /* Area Kiri: Video & Teks Instruksi */
+        .content-area { 
+            flex: 1; 
+            padding: 30px; 
+            overflow-y: auto; 
+            background-color: var(--bg-color); 
+        }
+
+        /* Kontainer Video Responsif 16:9 */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* Rasio Aspek 16:9 */
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .video-container iframe, 
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .instruction-box { 
+            background-color: var(--surface-color); 
+            padding: 24px; 
+            border-radius: 12px; 
+            border-left: 4px solid var(--accent); 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .instruction-box code { 
+            font-family: var(--font-mono);
+            background-color: #0b0f19;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #fbbf24; 
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        .pre-code {
+            display: block !important;
+            padding: 15px !important;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Area Kanan: Daftar Modul (Sidebar Navigasi) */
+        .sidebar-area { 
+            width: 350px; 
+            background-color: #0b0f19; 
+            border-left: 1px solid var(--border-color); 
+            overflow-y: auto; 
+            padding: 20px; 
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .module-list { list-style: none; margin-bottom: 25px; }
+        .module-list li { margin-bottom: 8px; }
+        .module-list a { 
+            display: flex; 
+            align-items: center;
+            padding: 12px 16px; 
+            background-color: var(--surface-color); 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            color: var(--text-muted); 
+            font-size: 0.9rem; 
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .module-list a:hover { 
+            border-color: rgba(255,255,255,0.2); 
+            color: var(--text-main); 
+            transform: translateX(4px);
+        }
+
+        .module-list a.active { 
+            background-color: rgba(16, 185, 129, 0.1); 
+            border-color: var(--accent); 
+            color: var(--accent); 
+        }
+
+        .module-list a svg { margin-right: 10px; opacity: 0.7; }
+        .module-list a.active svg { opacity: 1; color: var(--accent); }
+        
+        .chapter-title { 
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            color: #64748b; 
+            margin: 0 0 12px 5px; 
+            font-weight: 700;
+        }
+
+        /* Overlay Gelap Saat Menu Terbuka di HP */
+        .sidebar-overlay {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            backdrop-filter: blur(3px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* =========================================
+           Responsif Mobile (Off-Canvas Menu Navigasi)
+           ========================================= */
+        @media (max-width: 992px) {
+            body { overflow: auto; height: auto; display: block; }
+            
+            .player-layout { flex-direction: column; overflow: visible; min-height: calc(100vh - 70px); }
+            
+            .content-area { padding: 15px; width: 100%; }
+            
+            .course-title-top { display: none; } /* Sembunyikan judul di navbar HP agar muat */
+            
+            .btn-toggle-modul { display: flex; } /* Tampilkan tombol Menu Modul */
+            
+            .btn-mark { padding: 8px 12px; font-size: 0.8rem; }
+            
+            /* Sidebar Berubah Menjadi Menu Melayang (Off-Canvas) dari Kanan */
+            .sidebar-area { 
+                position: fixed;
+                top: 70px; /* Di bawah navbar */
+                right: 0;
+                height: calc(100vh - 70px);
+                width: 320px;
+                max-width: 100%;
+                transform: translateX(100%); /* Sembunyikan ke luar layar kanan */
+                border-left: 1px solid var(--border-color);
+                box-shadow: -5px 0 25px rgba(0,0,0,0.5);
+            }
+
+            .sidebar-area.show {
+                transform: translateX(0); /* Tampilkan Menu */
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+                opacity: 1;
+            }
+
+            .instruction-box { padding: 15px; }
+            .content-area h2 { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="player-navbar">
+        <a href="dashboard.html" class="btn btn-glass" style="padding: 8px 15px; font-size: 0.85rem;">
+            &larr; Dasbor
+        </a>
+        
+        <h3 class="course-title-top">Dasar-Dasar Linux</h3>
+        
+        <div class="player-actions">
+            <button class="btn-toggle-modul" id="toggleModulBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                Menu Modul
+            </button>
+            <button class="btn btn-primary btn-mark">Tandai Selesai</button>
+        </div>
+    </div>
+
+    <div class="player-layout">
+        
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <div class="content-area">
+            <h2 style="margin-bottom: 20px; font-size: 1.8rem;">Bab 1.2: Navigasi Direktori Dasar</h2>
+            
+            <div class="video-container">
+                <iframe 
+    src="https://youtu.be/42iQKuQodW4?si=pPB-VH18NiIaXkYN" 
+    title="Video Pembelajaran Linux" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+</iframe>
+            </div>
+
+            <div class="instruction-box">
+                <h3 style="margin-bottom: 12px; font-size: 1.2rem; color: var(--text-main);">Instruksi Terminal:</h3>
+                <p style="margin-bottom: 15px; color: var(--text-muted);">Sambil menonton video di atas, silakan buka terminal (<code>Ctrl+Alt+T</code>) di Linux Anda dan ketikkan perintah berikut untuk melihat posisi direktori Anda saat ini:</p>
+                
+                <code class="pre-code">
+<span style="color: #60a5fa;">fajar@lokalhost</span>:<span style="color: #3b82f6;">~</span>$ pwd<br>
+/home/fajar
+                </code>
+                
+                <p style="margin-top: 20px; margin-bottom: 10px; color: var(--text-muted);">Untuk berpindah ke direktori unduhan (Downloads), gunakan perintah <code>cd</code>:</p>
+                <code class="pre-code"><span style="color: #60a5fa;">fajar@lokalhost</span>:<span style="color: #3b82f6;">~</span>$ cd Downloads/</code>
+            </div>
+        </div>
+
+        <div class="sidebar-area" id="sidebarMenu">
+            <h3 style="margin-bottom: 25px; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                Daftar Isi Modul
+            </h3>
+            
+            <div class="chapter-title">Bab 1: Pengenalan Dasar</div>
+            <ul class="module-list">
+                <li>
+                    <a href="#">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        1.1 Sejarah Singkat Linux
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="active">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        1.2 Navigasi Direktori (cd, pwd)
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                        1.3 Membuat File & Folder
+                    </a>
+                </li>
+            </ul>
+
+            <div class="chapter-title">Bab 2: Manajemen Pengguna</div>
+            <ul class="module-list">
+                <li>
+                    <a href="#">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                        2.1 Konsep Superuser (Root)
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                        2.2 Perintah sudo dan su
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const toggleBtn = document.getElementById('toggleModulBtn');
+            const sidebarMenu = document.getElementById('sidebarMenu');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+            // Fungsi untuk membuka/menutup menu
+            const toggleMenu = () => {
+                sidebarMenu.classList.toggle('show');
+                sidebarOverlay.classList.toggle('show');
+            };
+
+            // Event listener saat tombol Menu diklik
+            toggleBtn.addEventListener('click', toggleMenu);
+
+            // Event listener saat area gelap (overlay) diklik, menu akan tertutup
+            sidebarOverlay.addEventListener('click', toggleMenu);
+        });
+    </script>
+</body>
+</html>
