@@ -1,136 +1,262 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinuxEdu | Tingkatkan Keahlian Open Source Anda</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Uranix Store - Bento App JPG</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        darkBg: '#0f172a',
+                        cardLight: '#ffffff',
+                        cardDark: '#1e293b',
+                    },
+                    borderRadius: {
+                        '4xl': '2rem',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700;800;900&display=swap');
+        
+        body { font-family: 'Urbanist', sans-serif; background-color: #cbd5e1; }
+        .dark body { background-color: #020617; }
+        
+        .app-container {
+            max-width: 420px;
+            margin: 0 auto;
+            background-color: #f1f5f9;
+            min-height: 100dvh;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+            overflow-x: hidden;
+        }
+        .dark .app-container { background-color: #0f172a; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .bottom-sheet { transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); }
+        .sheet-open { transform: translateY(0%); }
+        .sheet-closed { transform: translateY(120%); }
+
+        .bento-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .bento-card:active { transform: scale(0.96); }
+    </style>
 </head>
-<body>
+<body class="text-slate-900 dark:text-slate-100 transition-colors duration-300">
 
-    <header class="navbar">
-        <div class="container nav-content">
-            <a href="index.html" class="logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-                Linux<span class="text-accent">Edu</span>
-            </a>
-            
-           
-
-            <nav class="nav-links" id="navLinks">
-                <a href="#materi" class="nav-link-item">Materi Pembelajaran</a>
-                <a href="pages/login.html" class="nav-link-subtle nav-link-item">Masuk</a>
-                <a href="pages/register.html" class="btn btn-primary nav-link-item">Daftar Akun</a>
-            </nav>
-        </div>
-    </header>
-
-    <section class="hero relative-overflow">
-        <div class="glow-bg top-left"></div>
-        <div class="glow-bg bottom-right"></div>
-
-        <div class="container hero-content animate-on-scroll">
-            <div class="badge-pill mb-4">
-                <span class="badge-dot"></span> Rilis Modul Cinnamon Terbaru
+    <div class="app-container flex flex-col pb-8">
+        
+        <header class="pt-10 pb-4 px-6 flex justify-between items-center z-10 sticky top-0 bg-white/80 dark:bg-[#0f172a]/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50">
+            <div class="flex flex-col">
+                <span class="font-black text-3xl tracking-tight text-slate-900 dark:text-white leading-none">
+                    Uranix Store.
+                </span>
+                <span class="text-xs font-bold text-primary mt-1 uppercase tracking-widest">Digital Service</span>
             </div>
+            <button id="theme-toggle" class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 active:scale-90 transition-transform">
+                <i id="theme-icon" class="fa-solid fa-moon"></i>
+            </button>
+        </header>
+
+        <main class="flex-1 px-5 mt-6 overflow-y-auto no-scrollbar">
             
-            <h1 class="hero-title">
-                Kuasai Kernelnya.<br>
-                <span id="typewriter" class="text-gradient"></span>
-            </h1>
-            
-            <p class="hero-desc">
-                Tingkatkan keahlian sumber terbuka (open-source) Anda. Dari perintah dasar bash hingga administrasi server tingkat lanjut dan kustomisasi antarmuka desktop.
-            </p>
-            
-            <div class="hero-cta">
-                <a href="pages/register.html" class="btn btn-primary btn-lg">Mulai Belajar Sekarang</a>
-                <a href="#materi" class="btn btn-glass btn-lg">Lihat Daftar Modul</a>
-            </div>
-<br>
-<br>
-<br>
-            <div class="mockup-container mt-5 animate-on-scroll" style="transition-delay: 0.2s;">
-                <div class="mockup-header">
-                    <div class="mockup-dots"><span></span><span></span><span></span></div>
-                    <div class="mockup-url">localhost:8080/dashboard</div>
-                </div>
-                <div class="mockup-body">
-                    <div class="code-line"><span class="code-comment"># Memulai layanan pembelajaran...</span></div>
-                    <div class="code-line"><span class="code-keyword">sudo</span> systemctl start linux-edu</div>
-                    <div class="code-line"><span class="code-success">[ OK ]</span> Layanan berhasil dijalankan.</div>
-                    <div class="code-line">Menunggu koneksi siswa...</div>
+            <div class="w-full bg-slate-900 dark:bg-primary rounded-[28px] p-6 text-white mb-8 relative overflow-hidden shadow-xl shadow-slate-900/20 dark:shadow-primary/20">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-500 rounded-full blur-[50px] opacity-40"></div>
+                <div class="relative z-10">
+                    <span class="inline-block px-3 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black tracking-widest mb-3 uppercase">
+                        <i class="fa-solid fa-circle-check mr-1 text-green-400"></i> Trusted Seller
+                    </span>
+                    <h2 class="text-2xl font-black leading-tight mb-2">Layanan Digital<br>Premium & Fast Respon</h2>
+                    <p class="text-sm font-bold text-slate-300 dark:text-blue-100">Checkout langsung via WhatsApp.</p>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section id="materi" class="courses">
-        <div class="container">
-            <div class="section-header animate-on-scroll">
-                <h2 class="section-title">Kurikulum <span class="text-accent">Terstruktur</span></h2>
-                <p class="section-subtitle">Pilih jalur pembelajaran yang sesuai dengan tingkat keahlian Anda saat ini.</p>
+            <div class="mb-5 flex justify-between items-end">
+                <h3 class="font-extrabold text-2xl tracking-tight">Katalog Produk</h3>
+                <span class="text-xs font-bold text-slate-500 bg-slate-200 dark:bg-slate-800 px-2 py-1 rounded-lg">Realtime</span>
             </div>
             
-            <div class="course-grid">
-                <div class="course-card animate-on-scroll" style="transition-delay: 0.1s;">
-                    <div class="card-badge badge-beginner">Pemula</div>
-                    <h3>Dasar-Dasar Linux</h3>
-                    <p>Pelajari struktur direktori, manajemen pengguna, hak akses (chmod, chown), dan perintah dasar terminal untuk pemula.</p>
-                    <div class="card-footer">
-                        <span class="course-meta">8 Bab • 12 Jam</span>
-                        <a href="pages/register.html" class="card-link">Akses Modul &rarr;</a>
+            <div id="product-list" class="grid grid-cols-2 gap-4">
+                </div>
+
+            <div class="text-center mt-10 mb-4 opacity-50">
+                <p class="text-[10px] font-bold tracking-widest uppercase">Aman & Terpercaya</p>
+            </div>
+        </main>
+
+        <div id="backdrop" class="fixed inset-0 bg-slate-900/60 dark:bg-black/80 z-40 hidden opacity-0 transition-opacity duration-300 max-w-[420px] mx-auto backdrop-blur-sm" onclick="closeSheet()"></div>
+
+        <div class="fixed bottom-0 w-full max-w-[420px] px-3 pb-4 z-50 pointer-events-none flex flex-col justify-end h-full">
+            <div id="bottom-sheet" class="bottom-sheet sheet-closed pointer-events-auto bg-white dark:bg-cardDark rounded-4xl p-6 shadow-2xl border border-slate-200 dark:border-slate-700 flex flex-col max-h-[85dvh]">
+                
+                <div class="w-12 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-6"></div>
+
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 rounded-2xl bg-white dark:bg-white p-2.5 border-2 border-slate-200 dark:border-slate-600 shadow-sm flex-shrink-0 flex items-center justify-center">
+                        <img id="sheet-image" src="" alt="icon" class="w-full h-full object-contain">
+                    </div>
+                    <div>
+                        <h4 id="sheet-title" class="font-black text-slate-900 dark:text-white text-xl leading-tight">Nama Item</h4>
+                        <p id="sheet-price" class="text-primary font-black text-xl mt-0.5">Rp 0</p>
                     </div>
                 </div>
 
-                <div class="course-card animate-on-scroll" style="transition-delay: 0.2s;">
-                    <div class="card-badge badge-intermediate">Menengah</div>
-                    <h3>Pemrograman Skrip Bash</h3>
-                    <p>Otomatisasi tugas berulang Anda dengan menulis skrip Bash yang efisien. Membahas variabel, perulangan, dan percabangan.</p>
-                    <div class="card-footer">
-                        <span class="course-meta">10 Bab • 15 Jam</span>
-                        <a href="pages/register.html" class="card-link">Akses Modul &rarr;</a>
+                <form id="checkout-form" class="space-y-4 overflow-y-auto no-scrollbar pb-2">
+                    <input type="hidden" id="item-name">
+                    <input type="hidden" id="item-price">
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 pl-1">Gmail / Email Aktif <span class="text-red-500">*</span></label>
+                        <input type="email" id="user-email" required placeholder="akun@gmail.com" class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 px-4 py-3.5 rounded-2xl text-slate-900 dark:text-white text-sm font-bold outline-none focus:border-primary transition-colors">
                     </div>
-                </div>
+                    
+                    <div class="relative">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 pl-1">Metode Pembayaran <span class="text-red-500">*</span></label>
+                        <select id="payment-method" required class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 px-4 py-3.5 rounded-2xl text-slate-900 dark:text-white text-sm font-bold outline-none focus:border-primary transition-colors appearance-none cursor-pointer">
+                            <option value="" disabled selected>Pilih e-Wallet/Bank...</option>
+                            <option value="DANA">DANA</option>
+                            <option value="OVO">OVO</option>
+                            <option value="ShopeePay">ShopeePay</option>
+                            <option value="SeaBank">SeaBank</option>
+                            <option value="GoPay">GoPay</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-5 top-[38px] text-slate-400 text-sm pointer-events-none"></i>
+                    </div>
 
-                <div class="course-card animate-on-scroll" style="transition-delay: 0.3s;">
-                    <div class="card-badge badge-intermediate">Menengah</div>
-                    <h3>Kustomisasi Cinnamon</h3>
-                    <p>Eksplorasi mendalam untuk meracik lingkungan desktop Linux Mint Cinnamon Anda agar tampil estetik dan produktif.</p>
-                    <div class="card-footer">
-                        <span class="course-meta">5 Bab • 8 Jam</span>
-                        <a href="pages/register.html" class="card-link">Akses Modul &rarr;</a>
+                    <div class="pt-4">
+                        <button type="submit" class="w-full bg-slate-900 dark:bg-primary text-white font-black py-4 rounded-2xl active:scale-95 transition-transform flex items-center justify-center gap-2 shadow-xl shadow-slate-900/20 dark:shadow-primary/20 text-lg tracking-wide">
+                            <i class="fa-brands fa-whatsapp text-xl"></i> Checkout WA
+                        </button>
                     </div>
-                </div>
-
-                <div class="course-card animate-on-scroll" style="transition-delay: 0.4s;">
-                    <div class="card-badge badge-advanced">Lanjutan</div>
-                    <h3>Administrasi Server</h3>
-                    <p>Persiapan VPS, konfigurasi Nginx/Apache, manajemen tembok api (UFW), dan penyebaran aplikasi di lingkungan produksi.</p>
-                    <div class="card-footer">
-                        <span class="course-meta">12 Bab • 20 Jam</span>
-                        <a href="pages/register.html" class="card-link">Akses Modul &rarr;</a>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
 
-    <footer>
-        <div class="container footer-content animate-on-scroll">
-            <div class="footer-brand">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="logo-icon"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-                <span class="font-semibold">LinuxEdu</span>
-            </div>
-            <p class="footer-text">&copy; 2026 Proyek LMS Linux. Dibangun untuk ekosistem Open Source.</p>
-            <div class="footer-links">
-                <a href="#">Ketentuan</a>
-                <a href="#">Privasi</a>
-            </div>
-        </div>
-    </footer>
+    <script>
+        // Nomor WhatsApp sudah diupdate ke nomor tujuan
+        const waNumber = "6289665119793"; 
 
-    <script src="assets/js/main.js"></script>
+        const products = [
+            { id: 'g-priv', name: 'Gemini Pro (Privat)', desc: 'Akun Sendiri (Aman)', price: 15000, image: 'https://logos-world.net/wp-content/uploads/2025/02/Google-Gemini-Logo.jpg' },
+            { id: 'g-share', name: 'Gemini Pro (Share)', price: 7000, image: 'https://logos-world.net/wp-content/uploads/2025/02/Google-Gemini-Logo.jpg' },
+            { id: 'wa', name: 'Akun WhatsApp', price: 12000, image: 'https://img.freepik.com/premium-vector/green-square-social-media-logo_197792-2919.jpg?semt=ais_rp_50_assets&w=740&q=80' },
+            { id: 'tg', name: 'Akun Telegram', price: 10000, image: 'https://img.freepik.com/premium-photo/square-telegram-logo-isolated-white-background_469489-1055.jpg?semt=ais_rp_50_assets&w=740&q=80' },
+            { id: 'tt', name: 'Akun TikTok', price: 15000, image: 'https://thumbs.dreamstime.com/b/square-tiktok-logo-isolated-white-background-266995761.jpg' },
+            { id: 'gmail', name: 'Akun Gmail Fresh', price: 5000, image: 'https://upload.wikimedia.org/wikipedia/commons/d/d2/Logo_Gmail.jpg' }
+        ];
+
+        const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+
+        const productList = document.getElementById('product-list');
+        products.forEach(prod => {
+            const card = document.createElement('div');
+            const isHot = prod.id === 'g-priv';
+            
+            if (isHot) {
+                // Item Utama / Featured (Lebar Penuh)
+                card.className = 'bento-card col-span-2 bg-gradient-to-br from-slate-100 to-white dark:from-slate-800 dark:to-slate-800 rounded-[28px] p-5 cursor-pointer flex items-center gap-4 shadow-sm border border-slate-200 dark:border-slate-700';
+                card.onclick = () => openSheet(prod);
+                card.innerHTML = `
+                    <div class="relative w-20 h-20 rounded-2xl bg-white dark:bg-white p-3 border-2 border-slate-200 dark:border-slate-600 flex-shrink-0 flex items-center justify-center">
+                        <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-contain">
+                    </div>
+                    <div class="flex-1">
+                        <span class="bg-red-500 text-white text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-widest mb-1.5 inline-block shadow-sm">Best Seller</span>
+                        <h3 class="font-black text-xl leading-tight mb-1 text-slate-900 dark:text-white">${prod.name}</h3>
+                        <p class="font-bold text-primary text-sm">${formatRp(prod.price)}</p>
+                    </div>
+                `;
+            } else {
+                // Item Biasa (Kotak)
+                card.className = 'bento-card col-span-1 bg-white dark:bg-cardDark rounded-[28px] p-5 cursor-pointer flex flex-col items-center justify-center text-center shadow-sm border border-slate-200 dark:border-slate-700';
+                card.onclick = () => openSheet(prod);
+                card.innerHTML = `
+                    <div class="w-16 h-16 rounded-2xl bg-white dark:bg-white p-2.5 mb-3 border-2 border-slate-200 dark:border-slate-600 flex items-center justify-center shadow-inner">
+                        <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-contain">
+                    </div>
+                    <h3 class="font-bold text-[15px] leading-tight text-slate-900 dark:text-white mb-1 truncate w-full">${prod.name}</h3>
+                    <p class="font-extrabold text-primary text-[15px]">${formatRp(prod.price)}</p>
+                `;
+            }
+            productList.appendChild(card);
+        });
+
+        const sheet = document.getElementById('bottom-sheet');
+        const backdrop = document.getElementById('backdrop');
+
+        function openSheet(prod) {
+            document.getElementById('sheet-image').src = prod.image;
+            document.getElementById('sheet-title').innerText = prod.name + (prod.desc ? ` (${prod.desc})` : '');
+            document.getElementById('sheet-price').innerText = formatRp(prod.price);
+            
+            document.getElementById('item-name').value = prod.name;
+            document.getElementById('item-price').value = formatRp(prod.price);
+            
+            backdrop.classList.remove('hidden');
+            setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+            
+            sheet.classList.remove('sheet-closed');
+            sheet.classList.add('sheet-open');
+        }
+
+        function closeSheet() {
+            sheet.classList.remove('sheet-open');
+            sheet.classList.add('sheet-closed');
+            
+            backdrop.classList.add('opacity-0');
+            setTimeout(() => backdrop.classList.add('hidden'), 300);
+        }
+
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const itemName = document.getElementById('item-name').value;
+            const itemPrice = document.getElementById('item-price').value;
+            const email = document.getElementById('user-email').value;
+            const payment = document.getElementById('payment-method').value;
+
+            const text = `===== URANIX STORE =====\n\nHaloo Admin, mau order:\n▪️ *Item:* ${itemName}\n▪️ *Harga:* ${itemPrice}\n▪️ *Email:* ${email}\n▪️ *Bayar via:* ${payment}\n\nMinta detail transfernya ya.`;
+            
+            const encodedText = encodeURIComponent(text);
+            const waUrl = `https://api.whatsapp.com/send?phone=${waNumber}&text=${encodedText}`;
+            
+            window.open(waUrl, '_blank');
+            closeSheet();
+            this.reset();
+        });
+
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+            html.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.setItem('color-theme', 'dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                localStorage.setItem('color-theme', 'light');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            }
+        });
+    </script>
 </body>
 </html>
