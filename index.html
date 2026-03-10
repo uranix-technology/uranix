@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Uranix Store - Bento App JPG</title>
+    <title>Uranix Store - Bento App</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -63,8 +63,9 @@
                 </span>
                 <span class="text-xs font-bold text-primary mt-1 uppercase tracking-widest">Digital Service</span>
             </div>
-            <button id="theme-toggle" class="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 active:scale-90 transition-transform">
-                <i id="theme-icon" class="fa-solid fa-moon"></i>
+            
+            <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center text-slate-800 dark:text-slate-200 hover:text-primary dark:hover:text-primary active:scale-90 transition-transform duration-200">
+                <i id="theme-icon" class="fa-solid fa-moon text-[22px]"></i>
             </button>
         </header>
 
@@ -116,8 +117,11 @@
                     <input type="hidden" id="item-price">
                     
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 pl-1">Gmail / Email Aktif <span class="text-red-500">*</span></label>
-                        <input type="email" id="user-email" required placeholder="akun@gmail.com" class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 px-4 py-3.5 rounded-2xl text-slate-900 dark:text-white text-sm font-bold outline-none focus:border-primary transition-colors">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 pl-1">Alamat Gmail <span class="text-red-500">*</span></label>
+                        <div class="relative flex items-center">
+                            <input type="text" id="user-email" required placeholder="username" class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 pl-4 pr-[90px] py-3.5 rounded-2xl text-slate-900 dark:text-white text-sm font-bold outline-none focus:border-primary transition-colors">
+                            <span class="absolute right-4 text-slate-500 dark:text-slate-400 font-bold text-sm pointer-events-none">@gmail.com</span>
+                        </div>
                     </div>
                     
                     <div class="relative">
@@ -144,16 +148,13 @@
     </div>
 
     <script>
-        // Nomor WhatsApp sudah diupdate ke nomor tujuan
         const waNumber = "6289665119793"; 
 
         const products = [
-            { id: 'g-priv', name: 'Gemini Pro (Privat)', desc: 'Akun Sendiri (Aman)', price: 15000, image: 'https://logos-world.net/wp-content/uploads/2025/02/Google-Gemini-Logo.jpg' },
-            { id: 'g-share', name: 'Gemini Pro (Share)', price: 7000, image: 'https://logos-world.net/wp-content/uploads/2025/02/Google-Gemini-Logo.jpg' },
-            { id: 'wa', name: 'Akun WhatsApp', price: 12000, image: 'https://img.freepik.com/premium-vector/green-square-social-media-logo_197792-2919.jpg?semt=ais_rp_50_assets&w=740&q=80' },
-            { id: 'tg', name: 'Akun Telegram', price: 10000, image: 'https://img.freepik.com/premium-photo/square-telegram-logo-isolated-white-background_469489-1055.jpg?semt=ais_rp_50_assets&w=740&q=80' },
-            { id: 'tt', name: 'Akun TikTok', price: 15000, image: 'https://thumbs.dreamstime.com/b/square-tiktok-logo-isolated-white-background-266995761.jpg' },
-            { id: 'gmail', name: 'Akun Gmail Fresh', price: 5000, image: 'https://upload.wikimedia.org/wikipedia/commons/d/d2/Logo_Gmail.jpg' }
+            { id: 'g-priv', name: 'Gemini Pro (Privat)', desc: 'Akun Sendiri (Aman)', price: 15000, image: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+            { id: 'g-share', name: 'Gemini Pro (Share)', price: 7000, image: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+            { id: 'wa', name: 'Akun WhatsApp', price: 5000, image: 'https://img.freepik.com/premium-vector/green-square-social-media-logo_197792-2919.jpg?semt=ais_rp_50_assets&w=740&q=80' },
+            { id: 'tg', name: 'Akun Telegram', price: 5000, image: 'https://img.freepik.com/premium-photo/square-telegram-logo-isolated-white-background_469489-1055.jpg?semt=ais_rp_50_assets&w=740&q=80' }
         ];
 
         const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
@@ -163,32 +164,24 @@
             const card = document.createElement('div');
             const isHot = prod.id === 'g-priv';
             
-            if (isHot) {
-                // Item Utama / Featured (Lebar Penuh)
-                card.className = 'bento-card col-span-2 bg-gradient-to-br from-slate-100 to-white dark:from-slate-800 dark:to-slate-800 rounded-[28px] p-5 cursor-pointer flex items-center gap-4 shadow-sm border border-slate-200 dark:border-slate-700';
-                card.onclick = () => openSheet(prod);
-                card.innerHTML = `
-                    <div class="relative w-20 h-20 rounded-2xl bg-white dark:bg-white p-3 border-2 border-slate-200 dark:border-slate-600 flex-shrink-0 flex items-center justify-center">
-                        <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-contain">
-                    </div>
-                    <div class="flex-1">
-                        <span class="bg-red-500 text-white text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-widest mb-1.5 inline-block shadow-sm">Best Seller</span>
-                        <h3 class="font-black text-xl leading-tight mb-1 text-slate-900 dark:text-white">${prod.name}</h3>
-                        <p class="font-bold text-primary text-sm">${formatRp(prod.price)}</p>
-                    </div>
-                `;
-            } else {
-                // Item Biasa (Kotak)
-                card.className = 'bento-card col-span-1 bg-white dark:bg-cardDark rounded-[28px] p-5 cursor-pointer flex flex-col items-center justify-center text-center shadow-sm border border-slate-200 dark:border-slate-700';
-                card.onclick = () => openSheet(prod);
-                card.innerHTML = `
-                    <div class="w-16 h-16 rounded-2xl bg-white dark:bg-white p-2.5 mb-3 border-2 border-slate-200 dark:border-slate-600 flex items-center justify-center shadow-inner">
-                        <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-contain">
-                    </div>
-                    <h3 class="font-bold text-[15px] leading-tight text-slate-900 dark:text-white mb-1 truncate w-full">${prod.name}</h3>
-                    <p class="font-extrabold text-primary text-[15px]">${formatRp(prod.price)}</p>
-                `;
-            }
+            card.className = 'bento-card col-span-1 bg-white dark:bg-cardDark rounded-[28px] p-5 cursor-pointer flex flex-col items-center justify-center text-center shadow-sm border border-slate-200 dark:border-slate-700 relative overflow-hidden';
+            card.onclick = () => openSheet(prod);
+            
+            const badge = isHot ? `
+                <div class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-sm z-10 flex items-center gap-1">
+                    Best Seller
+                </div>
+            ` : '';
+
+            card.innerHTML = `
+                ${badge}
+                <div class="w-16 h-16 rounded-2xl bg-white dark:bg-white p-2.5 mb-3 border-2 border-slate-200 dark:border-slate-600 flex items-center justify-center shadow-inner mt-2">
+                    <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-contain">
+                </div>
+                <h3 class="font-bold text-[14px] leading-tight text-slate-900 dark:text-white mb-1 truncate w-full" title="${prod.name}">${prod.name}</h3>
+                <p class="font-extrabold text-primary text-[15px]">${formatRp(prod.price)}</p>
+            `;
+            
             productList.appendChild(card);
         });
 
@@ -203,6 +196,10 @@
             document.getElementById('item-name').value = prod.name;
             document.getElementById('item-price').value = formatRp(prod.price);
             
+            // Reset input form
+            document.getElementById('user-email').value = '';
+            document.getElementById('payment-method').value = '';
+
             backdrop.classList.remove('hidden');
             setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
             
@@ -223,10 +220,12 @@
             
             const itemName = document.getElementById('item-name').value;
             const itemPrice = document.getElementById('item-price').value;
-            const email = document.getElementById('user-email').value;
+            const emailInput = document.getElementById('user-email').value;
+            const email = emailInput + '@gmail.com';
             const payment = document.getElementById('payment-method').value;
 
-            const text = `===== URANIX STORE =====\n\nHaloo Admin, mau order:\n▪️ *Item:* ${itemName}\n▪️ *Harga:* ${itemPrice}\n▪️ *Email:* ${email}\n▪️ *Bayar via:* ${payment}\n\nMinta detail transfernya ya.`;
+            // Format text WA sesuai request
+            const text = `Payment URANIX STORE.\n\nHalo kak, mau order:\n• *Item:* ${itemName}\n• *Harga:* ${itemPrice}\n• *Email:* ${email}\n• *Bayar via:* ${payment}\n\nMinta detail transfernya ya.`;
             
             const encodedText = encodeURIComponent(text);
             const waUrl = `https://api.whatsapp.com/send?phone=${waNumber}&text=${encodedText}`;
