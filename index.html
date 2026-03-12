@@ -150,11 +150,11 @@
     <script>
         const waNumber = "6289665119793"; 
 
-        // Update Deskripsi Menjadi Lebih Ringkas Sesuai Permintaan
+        // Logo YouTube sudah diperbarui menggunakan link dari Icons8 yang stabil
         const products = [
             { id: 'g-priv', name: 'Gemini Pro (Privat)', desc: '1 Bulan', price: 12000, image: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
             { id: 'g-share', name: 'Gemini Pro (Share)', desc: '1 Bulan', price: 5000, image: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
-            { id: 'yt-prem', name: 'YouTube Premium', desc: '1 Bulan', price: 10000, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/512px-YouTube_full-color_icon_%282017%29.svg.png' },
+            { id: 'yt-prem', name: 'YouTube Premium', desc: '1 Bulan', price: 10000, image: 'https://img.icons8.com/color/512/youtube-play.png' },
             { id: 'wa', name: 'Akun WhatsApp', desc: 'Sekali Bayar', price: 5000, image: 'https://img.freepik.com/premium-vector/green-square-social-media-logo_197792-2919.jpg?semt=ais_rp_50_assets&w=740&q=80' },
             { id: 'tg', name: 'Akun Telegram', desc: 'Sekali Bayar', price: 5000, image: 'https://img.freepik.com/premium-photo/square-telegram-logo-isolated-white-background_469489-1055.jpg?semt=ais_rp_50_assets&w=740&q=80' }
         ];
@@ -194,7 +194,6 @@
         function openSheet(prod) {
             document.getElementById('sheet-image').src = prod.image;
             
-            // Format diubah menggunakan strip " - " sesuai request
             const itemNameWithDesc = prod.name + (prod.desc ? ` - ${prod.desc}` : '');
             
             document.getElementById('sheet-title').innerText = itemNameWithDesc;
