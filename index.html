@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Uranix Store - Bento App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        darkBg: '#0f172a',
+                        cardLight: '#ffffff',
+                        cardDark: '#1e293b',
+                    },
+                    borderRadius: {
+                        '4xl': '2rem',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700;800;900&display=swap');
+        
+        body { font-family: 'Urbanist', sans-serif; background-color: #cbd5e1; }
+        .dark body { background-color: #020617; }
+        
+        .app-container {
+            max-width: 420px;
+            margin: 0 auto;
+            background-color: #f1f5f9;
+            min-height: 100dvh;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+            overflow-x: hidden;
+        }
+        .dark .app-container { background-color: #0f172a; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .bottom-sheet { transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); }
+        .sheet-open { transform: translateY(0%); }
+        .sheet-closed { transform: translateY(120%); }
+
+        .bento-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .bento-card:active { transform: scale(0.96); }
+    </style>
+</head>
+<body class="text-slate-900 dark:text-slate-100 transition-colors duration-300">
+
+    <div class="app-container flex flex-col pb-8">
+        
+        <header class="pt-10 pb-4 px-6 flex justify-between items-center z-10 sticky top-0 bg-white/80 dark:bg-[#0f172a]/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50">
+            <div class="flex flex-col">
+                <span class="font-black text-3xl tracking-tight text-slate-900 dark:text-white leading-none">
+                    Uranix Store.
+                </span>
+                <span class="text-xs font-bold text-primary mt-1 uppercase tracking-widest">Digital Service</span>
+            </div>
+            
+            <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center text-slate-800 dark:text-slate-200 hover:text-primary dark:hover:text-primary active:scale-90 transition-transform duration-200">
+                <i id="theme-icon" class="fa-solid fa-moon text-[22px]"></i>
+            </button>
+        </header>
+
+        <main class="flex-1 px-5 mt-6 overflow-y-auto no-scrollbar">
+            
+            <div class="w-full bg-slate-900 dark:bg-primary rounded-[28px] p-6 text-white mb-8 relative overflow-hidden shadow-xl shadow-slate-900/20 dark:shadow-primary/20">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-500 rounded-full blur-[50px] opacity-40"></div>
+                <div class="relative z-10">
+                    <span class="inline-block px-3 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black tracking-widest mb-3 uppercase">
+                        <i class="fa-solid fa-circle-check mr-1 text-green-400"></i> Trusted Seller
+                    </span>
+                    <h2 class="text-2xl font-black leading-tight mb-2">Layanan Digital<br>Premium & Fast Respon</h2>
+                    <p class="text-sm font-bold text-slate-300 dark:text-blue-100">Checkout langsung via WhatsApp.</p>
+                </div>
+            </div>
+
+            <div class="mb-5 flex justify-between items-end">
+                <h3 class="font-extrabold text-2xl tracking-tight">Katalog Produk</h3>
+                <span class="text-xs font-bold text-slate-500 bg-slate-200 dark:bg-slate-800 px-2 py-1 rounded-lg">Realtime</span>
+            </div>
+            
+            <div id="product-list" class="grid grid-cols-2 gap-4">
+                </div>
+
+            <div class="text-center mt-10 mb-4 opacity-50">
+                <p class="text-[10px] font-bold tracking-widest uppercase">Aman & Terpercaya</p>
+            </div>
+        </main>
+
+        <div id="backdrop" class="fixed inset-0 bg-slate-900/60 dark:bg-black/80 z-40 hidden opacity-0 transition-opacity duration-300 max-w-[420px] mx-auto backdrop-blur-sm" onclick="closeSheet()"></div>
+
+        <div class="fixed bottom-0 w-full max-w-[420px] px-3 pb-4 z-50 pointer-events-none flex flex-col justify-end h-full">
+            <div id="bottom-sheet" class="bottom-sheet sheet-closed pointer-events-auto bg-white dark:bg-cardDark rounded-4xl p-6 shadow-2xl border border-slate-200 dark:border-slate-700 flex flex-col max-h-[85dvh]">
+                
+                <div class="w-12 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mb-6"></div>
+
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 rounded-2xl bg-white dark:bg-white p-2.5 border-2 border-slate-200 dark:border-slate-600 shadow-sm flex-shrink-0 flex items-center justify-center">
+                        <img id="sheet-image" src="" alt="icon" class="w-full h-full object-contain">
+                    </div>
+                    <div>
+                        <h4 id="sheet-title" class="font-black text-slate-900 dark:text-white text-xl leading-tight">Nama Item</h4>
+                        <p id="sheet-price" class="text-primary font-black text-xl mt-0.5">Rp 0</p>
+                    </div>
+                </div>
+
+                <form id="checkout-form" class="space-y-4 overflow-y-auto no-scrollbar pb-2">
+                    <input type="hidden" id="item-name">
+                    <input type="hidden" id="item-price">
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 pl-1">Alamat Gmail <span class="text-red-500">*</span></label>
+                        <div class="relative flex items-center">
+                            <input type="text" id="user-email" required placeholder="username" class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 pl-4 pr-[90px] py-3.5 rounded-2xl text-slate-900 dark:text-white text-sm font-bold outline-none focus:border-primary transition-colors">
+                            <span class="absolute right-4 text-slate-500 dark:text-slate-400 font-bold text-sm pointer-events-none">@gmail.com</span>
+                        </div>
+                    </div>
+                    
+                    <div class="relative">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 pl-1">Metode Pembayaran <span class="text-red-500">*</span></label>
+                        <select id="payment-method" required class="w-full bg-slate-50 dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 px-4 py-3.5 rounded-2xl text-slate-900 dark:text-white text-sm font-bold outline-none focus:border-primary transition-colors appearance-none cursor-pointer">
+                            <option value="" disabled selected>Pilih e-Wallet/Bank...</option>
+                            <option value="DANA">DANA</option>
+                            <option value="OVO">OVO</option>
+                            <option value="ShopeePay">ShopeePay</option>
+                            <option value="SeaBank">SeaBank</option>
+                            <option value="GoPay">GoPay</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-5 top-[38px] text-slate-400 text-sm pointer-events-none"></i>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" class="w-full bg-slate-900 dark:bg-primary text-white font-black py-4 rounded-2xl active:scale-95 transition-transform flex items-center justify-center gap-2 shadow-xl shadow-slate-900/20 dark:shadow-primary/20 text-lg tracking-wide">
+                            <i class="fa-brands fa-whatsapp text-xl"></i> Checkout WA
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const waNumber = "6289665119793"; 
+
+        // Update Deskripsi Menjadi Lebih Ringkas Sesuai Permintaan
+        const products = [
+            { id: 'g-priv', name: 'Gemini Pro (Privat)', desc: '1 Bulan', price: 12000, image: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+            { id: 'g-share', name: 'Gemini Pro (Share)', desc: '1 Bulan', price: 5000, image: 'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg' },
+            { id: 'yt-prem', name: 'YouTube Premium', desc: '1 Bulan', price: 10000, image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/YouTube_full-color_icon_%282017%29.svg/512px-YouTube_full-color_icon_%282017%29.svg.png' },
+            { id: 'wa', name: 'Akun WhatsApp', desc: 'Sekali Bayar', price: 5000, image: 'https://img.freepik.com/premium-vector/green-square-social-media-logo_197792-2919.jpg?semt=ais_rp_50_assets&w=740&q=80' },
+            { id: 'tg', name: 'Akun Telegram', desc: 'Sekali Bayar', price: 5000, image: 'https://img.freepik.com/premium-photo/square-telegram-logo-isolated-white-background_469489-1055.jpg?semt=ais_rp_50_assets&w=740&q=80' }
+        ];
+
+        const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+
+        const productList = document.getElementById('product-list');
+        products.forEach(prod => {
+            const card = document.createElement('div');
+            const isHot = prod.id === 'g-priv';
+            
+            card.className = 'bento-card col-span-1 bg-white dark:bg-cardDark rounded-[28px] p-5 cursor-pointer flex flex-col items-center justify-center text-center shadow-sm border border-slate-200 dark:border-slate-700 relative overflow-hidden';
+            card.onclick = () => openSheet(prod);
+            
+            const badge = isHot ? `
+                <div class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg shadow-sm z-10 flex items-center gap-1">
+                    Best Seller
+                </div>
+            ` : '';
+
+            card.innerHTML = `
+                ${badge}
+                <div class="w-16 h-16 rounded-2xl bg-white dark:bg-white p-2.5 mb-3 border-2 border-slate-200 dark:border-slate-600 flex items-center justify-center shadow-inner mt-2">
+                    <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-contain">
+                </div>
+                <h3 class="font-bold text-[14px] leading-tight text-slate-900 dark:text-white mb-0.5 truncate w-full" title="${prod.name}">${prod.name}</h3>
+                <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1.5 truncate w-full">${prod.desc}</p>
+                <p class="font-extrabold text-primary text-[15px]">${formatRp(prod.price)}</p>
+            `;
+            
+            productList.appendChild(card);
+        });
+
+        const sheet = document.getElementById('bottom-sheet');
+        const backdrop = document.getElementById('backdrop');
+
+        function openSheet(prod) {
+            document.getElementById('sheet-image').src = prod.image;
+            
+            // Format diubah menggunakan strip " - " sesuai request
+            const itemNameWithDesc = prod.name + (prod.desc ? ` - ${prod.desc}` : '');
+            
+            document.getElementById('sheet-title').innerText = itemNameWithDesc;
+            document.getElementById('sheet-price').innerText = formatRp(prod.price);
+            
+            document.getElementById('item-name').value = itemNameWithDesc;
+            document.getElementById('item-price').value = formatRp(prod.price);
+            
+            // Reset input form
+            document.getElementById('user-email').value = '';
+            document.getElementById('payment-method').value = '';
+
+            backdrop.classList.remove('hidden');
+            setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+            
+            sheet.classList.remove('sheet-closed');
+            sheet.classList.add('sheet-open');
+        }
+
+        function closeSheet() {
+            sheet.classList.remove('sheet-open');
+            sheet.classList.add('sheet-closed');
+            
+            backdrop.classList.add('opacity-0');
+            setTimeout(() => backdrop.classList.add('hidden'), 300);
+        }
+
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const itemName = document.getElementById('item-name').value;
+            const itemPrice = document.getElementById('item-price').value;
+            const emailInput = document.getElementById('user-email').value;
+            const email = emailInput + '@gmail.com';
+            const payment = document.getElementById('payment-method').value;
+
+            // Format text WA
+            const text = `Payment URANIX STORE.\n\nHalo kak, mau order:\n• *Item:* ${itemName}\n• *Harga:* ${itemPrice}\n• *Email:* ${email}\n• *Bayar via:* ${payment}\n\nMinta detail transfernya ya.`;
+            
+            const encodedText = encodeURIComponent(text);
+            const waUrl = `https://api.whatsapp.com/send?phone=${waNumber}&text=${encodedText}`;
+            
+            window.open(waUrl, '_blank');
+            closeSheet();
+            this.reset();
+        });
+
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+            html.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.setItem('color-theme', 'dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                localStorage.setItem('color-theme', 'light');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            }
+        });
+    </script>
+</body>
+</html>
